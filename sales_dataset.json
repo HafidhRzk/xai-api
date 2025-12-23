@@ -1,0 +1,167 @@
+[
+  {
+    "salesname": "John Doe",
+    "month": "January",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 20, "late": 5 },
+      "visit": 17,
+      "productSold": 86,
+      "salesValue": 79730200
+    }
+  },
+  {
+    "salesname": "Jane Smith",
+    "month": "January",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 18, "late": 8 },
+      "visit": 12,
+      "productSold": 60,
+      "salesValue": 50230000
+    }
+  },
+  {
+    "salesname": "Robert Lee",
+    "month": "January",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 22, "late": 3 },
+      "visit": 20,
+      "productSold": 120,
+      "salesValue": 101230000
+    }
+  },
+  {
+    "salesname": "Maria Tan",
+    "month": "February",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 15, "late": 12 },
+      "visit": 10,
+      "productSold": 40,
+      "salesValue": 30200000
+    }
+  },
+  {
+    "salesname": "David Wong",
+    "month": "February",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 21, "late": 4 },
+      "visit": 18,
+      "productSold": 95,
+      "salesValue": 88000000
+    }
+  },
+  {
+    "salesname": "Alice Chen",
+    "month": "February",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 17, "late": 7 },
+      "visit": 14,
+      "productSold": 72,
+      "salesValue": 61000000
+    }
+  },
+  {
+    "salesname": "Michael Lim",
+    "month": "March",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 23, "late": 2 },
+      "visit": 22,
+      "productSold": 130,
+      "salesValue": 120000000
+    }
+  },
+  {
+    "salesname": "Sophia Zhang",
+    "month": "March",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 19, "late": 6 },
+      "visit": 16,
+      "productSold": 80,
+      "salesValue": 73000000
+    }
+  },
+  {
+    "salesname": "Kevin Hartono",
+    "month": "March",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 14, "late": 10 },
+      "visit": 9,
+      "productSold": 35,
+      "salesValue": 28000000
+    }
+  },
+  {
+    "salesname": "Olivia Kim",
+    "month": "April",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 20, "late": 5 },
+      "visit": 18,
+      "productSold": 100,
+      "salesValue": 92000000
+    }
+  },
+  {
+    "salesname": "Daniel Park",
+    "month": "April",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 16, "late": 9 },
+      "visit": 11,
+      "productSold": 55,
+      "salesValue": 45000000
+    }
+  },
+  {
+    "salesname": "Emily Tan",
+    "month": "April",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 24, "late": 1 },
+      "visit": 25,
+      "productSold": 140,
+      "salesValue": 130000000
+    }
+  },
+  {
+    "salesname": "William Choi",
+    "month": "May",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 13, "late": 11 },
+      "visit": 8,
+      "productSold": 30,
+      "salesValue": 25000000
+    }
+  },
+  {
+    "salesname": "Grace Lin",
+    "month": "May",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 21, "late": 4 },
+      "visit": 19,
+      "productSold": 110,
+      "salesValue": 99000000
+    }
+  },
+  {
+    "salesname": "Henry Lau",
+    "month": "May",
+    "year": "2025",
+    "performance": {
+      "attendance": { "ontime": 18, "late": 8 },
+      "visit": 13,
+      "productSold": 65,
+      "salesValue": 56000000
+    }
+  }
+]
