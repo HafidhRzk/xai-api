@@ -6,13 +6,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-# -----------------------------
-# 1. Load dataset JSON
-# -----------------------------
+# ** -----------------------------
+# ** 1. Load dataset JSON
+# ** -----------------------------
 with open("sales_dataset.json", "r") as f:
     raw_data = json.load(f)
 
-# Flatten JSON
+# ** Flatten JSON
 records = []
 for row in raw_data:
     perf = row["performance"]
@@ -29,18 +29,18 @@ for row in raw_data:
 
 df = pd.DataFrame(records)
 
-# -----------------------------
-# 2. Features & Z-score transform
-# -----------------------------
+# ** -----------------------------
+# ** 2. Features & Z-score transform
+# ** -----------------------------
 features = ["attendance_ontime", "attendance_late", "visit", "productSold", "salesValue"]
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df[features])
 df_z = pd.DataFrame(X_scaled, columns=features)
 
-# -----------------------------
-# 3. Generate score & label
-# -----------------------------
+# ** -----------------------------
+# ** 3. Generate score & label
+# ** -----------------------------
 weights = {
     "attendance_ontime": 0.2,
     "attendance_late": -0.1,
@@ -53,9 +53,9 @@ df_z["performance_class"] = pd.qcut(df_z["score"], q=3, labels=["Low", "Mid", "H
 
 print("Label distribution:\n", df_z["performance_class"].value_counts())
 
-# -----------------------------
-# 4. Train-Test Split
-# -----------------------------
+# ** -----------------------------
+# ** 4. Train-Test Split
+# ** -----------------------------
 X = df_z[features]
 y = df_z["performance_class"]
 
@@ -69,18 +69,18 @@ except ValueError:
         X, y, test_size=0.2, random_state=42
     )
 
-# -----------------------------
-# 5. Train RandomForest
-# -----------------------------
+# ** -----------------------------
+# ** 5. Train RandomForest
+# ** -----------------------------
 clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(X_train, y_train)
 
 print("Training Accuracy:", clf.score(X_train, y_train))
 print("Test Accuracy:", clf.score(X_test, y_test))
 
-# -----------------------------
-# 6. Save artifacts
-# -----------------------------
+# ** -----------------------------
+# ** 6. Save artifacts
+# ** -----------------------------
 artifacts = {
     "model": clf,
     "scaler": scaler,

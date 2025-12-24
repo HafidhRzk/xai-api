@@ -7,7 +7,7 @@ from lime.lime_tabular import LimeTabularExplainer
 from alibi.explainers import AnchorTabular
 import traceback
 
-# ==== Load artifacts ====
+# ** ==== Load artifacts ====
 with open("sales_classifier.pkl", "rb") as f:
     artifacts = pickle.load(f)
 
@@ -15,13 +15,13 @@ model = artifacts["model"]
 scaler = artifacts["scaler"]
 features = artifacts["features"]
 
-# Wrapper predict function for Anchor (convert class labels -> index)
+# ** Wrapper predict function for Anchor (convert class labels -> index)
 def predict_fn(x):
     preds = model.predict(x)
     return np.array([np.where(model.classes_ == p)[0][0] for p in preds])
 
-# ==== Prepare explainers ====
-background = np.random.randn(100, len(features))  # NOTE: ideally pakai data training asli
+# ** ==== Prepare explainers ====
+background = np.random.randn(100, len(features))  # ** NOTE: ideally pakai data training asli
 
 lime_explainer = LimeTabularExplainer(
     training_data=background,
@@ -33,17 +33,17 @@ lime_explainer = LimeTabularExplainer(
 anchor_explainer = AnchorTabular(predict_fn, feature_names=features)
 anchor_explainer.fit(background, disc_perc=[25, 50, 75])
 
-# ==== FastAPI App ====
+# ** ==== FastAPI App ====
 app = FastAPI(title="Sales Performance XAI API")
 
-# ==== Request Schema ====
+# ** ==== Request Schema ====
 class SalesInput(BaseModel):
     salesname: str
     month: str
     year: str
     performance: dict
 
-# ==== Helper: kategorisasi Z-score ====
+# ** ==== Helper: kategorisasi Z-score ====
 def categorize_value(z):
     if z < -0.5:
         return "rendah"
@@ -52,14 +52,14 @@ def categorize_value(z):
     else:
         return "sedang"
 
-# ==== Generate Narrative Text ====
+# ** ==== Generate Narrative Text ====
 def generate_explanation_text(salesname, month, year, prediction, shap_res, lime_res, anchor_res, X_scaled):
     texts = []
 
-    # Mapping fitur -> kategori
+    # ** Mapping fitur -> kategori
     feature_categories = {f: categorize_value(val) for f, val in zip(features, X_scaled[0])}
 
-    # SHAP narrative
+    # ** SHAP narrative
     top_shap = sorted(
         shap_res["contributions"],
         key=lambda x: abs(x["shap_value"]),
@@ -79,7 +79,7 @@ def generate_explanation_text(salesname, month, year, prediction, shap_res, lime
             shap_txt += ", ".join([f"{n} yang {feature_categories[n]}" for n in negative])
     texts.append(shap_txt + ".")
 
-    # LIME narrative
+    # ** LIME narrative
     if lime_res:
         lime_txt = f"Model LIME menilai {salesname} pada periode {month} {year} menunjukan {prediction} performance. "
         lime_txt += f"Hal ini dipengaruhi oleh kondisi seperti "
@@ -87,7 +87,7 @@ def generate_explanation_text(salesname, month, year, prediction, shap_res, lime
         lime_txt += f"{list(feature_categories.items())[1][0]} yang {list(feature_categories.items())[1][1]}."
         texts.append(lime_txt)
 
-    # Anchor narrative
+    # ** Anchor narrative
     if anchor_res and anchor_res["anchor"]:
         anchor_txt = f"Model Anchors menilai {salesname} pada periode {month} {year} menunjukan {prediction} performance. "
         anchor_txt += f"Penilaian ini terutama karena indikator {', '.join([f for f in feature_categories.keys() if f in anchor_res['anchor']])} berada pada kategori yang sesuai, " \
@@ -96,11 +96,11 @@ def generate_explanation_text(salesname, month, year, prediction, shap_res, lime
 
     return texts
 
-# ==== Combined Analyze Endpoint ====
+# ** ==== Combined Analyze Endpoint ====
 @app.post("/analyze")
 def analyze(data: SalesInput):
     try:
-        # --- Extract features ---
+        # ** --- Extract features ---
         perf = data.performance
         row = [[
             perf["attendance"]["ontime"],
@@ -111,7 +111,7 @@ def analyze(data: SalesInput):
         ]]
         X_scaled = scaler.transform(row)
 
-        # --- Prediction ---
+        # ** --- Prediction ---
         pred_class = model.predict(X_scaled)[0]
         probas = model.predict_proba(X_scaled)[0].tolist()
         prediction_result = {
@@ -121,7 +121,7 @@ def analyze(data: SalesInput):
             "features": {f: float(v) for f, v in zip(features, row[0])}
         }
 
-        # --- SHAP ---
+        # ** --- SHAP ---
         shap_explainer = shap.TreeExplainer(model)
         shap_values = shap_explainer.shap_values(X_scaled)
         shap_result = {
@@ -132,7 +132,7 @@ def analyze(data: SalesInput):
             ]
         }
 
-        # --- LIME ---
+        # ** --- LIME ---
         lime_exp = lime_explainer.explain_instance(
             data_row=X_scaled[0],
             predict_fn=model.predict_proba,
@@ -140,7 +140,7 @@ def analyze(data: SalesInput):
         )
         lime_result = lime_exp.as_list()
 
-        # --- Anchor ---
+        # ** --- Anchor ---
         anchor_exp = anchor_explainer.explain(X_scaled[0])
         anchor_result = {
             "precision": float(anchor_exp.data['precision']),
@@ -148,13 +148,13 @@ def analyze(data: SalesInput):
             "anchor": anchor_exp.data['anchor']
         }
 
-        # --- Narrative Text ---
+        # ** --- Narrative Text ---
         narrative_texts = generate_explanation_text(
             data.salesname, data.month, data.year,
             pred_class, shap_result, lime_result, anchor_result, X_scaled
         )
 
-        # --- Final response ---
+        # ** --- Final response ---
         return {
             "prediction": prediction_result,
             "explanations": {
